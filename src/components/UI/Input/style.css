@@ -1,0 +1,17 @@
+.form__input {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 1rem;
+}
+.form-group__select {
+    margin-bottom: 0.5rem;
+}
+.form-select {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+.label-input-file {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+    font-weight: 500;
+}

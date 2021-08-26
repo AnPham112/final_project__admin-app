@@ -1,0 +1,12 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #eee;
+    padding-top: 60px;
+    box-shadow: 0 0 2px rgb(97, 97, 97);
+}
+.admin-container {
+    margin-left: auto;
+}

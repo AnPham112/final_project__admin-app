@@ -1,0 +1,12 @@
+.admin-navbar {
+    z-index: 1;
+}
+.nav-link {
+    cursor: pointer;
+}
+.navbar-dark .navbar-brand {
+    font-weight: 600;
+    background: -webkit-linear-gradient(rgb(250, 172, 88), rgb(223, 58, 0));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

@@ -1,0 +1,74 @@
+/* .signup-container {
+    background-image: url("../../images/test9.jpg");
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    padding: 3rem 0;
+}
+.signup {
+    padding: 4.5rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 100%;
+    max-width: 55rem;
+    border-radius: 1.25rem;
+}
+.signup-heading {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #373941;
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+.signup-label {
+    font-size: 1rem;
+    color: #373941;
+    font-weight: 500;
+    margin-bottom: 0.625rem;
+    display: inline-block;
+    cursor: pointer;
+}
+.signup-input {
+    display: block;
+    width: 100%;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background-color: #f2f3f5;
+    outline: none;
+    border: 0;
+    font-family: "Roboto", sans-serif;
+    font-size: 1.25rem;
+}
+.signup-submit {
+    padding: 1.5rem;
+    color: white;
+    font-size: 1.125rem;
+    text-align: center;
+    border: 0;
+    outline: none;
+    display: block;
+    border-radius: 1.25rem;
+    background-color: rgba(22, 45, 51, 0.9);
+    cursor: pointer;
+    font-weight: 500;
+    box-shadow: 0 0 10px 0 rgba(17, 35, 39, 0.9);
+    margin: 1.5rem auto;
+}
+.signup-submit:hover {
+    background-color: rgba(17, 35, 39, 0.9);
+}
+.signup-grid {
+    max-width: 100%;
+    margin: 0 auto;
+}
+.signup-already {
+    text-align: center;
+    font-size: 1rem;
+    color: rgb(104, 104, 104);
+}
+.signup-login-link {
+    color: #2979ff;
+    text-decoration: none;
+} */

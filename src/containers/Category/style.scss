@@ -1,0 +1,76 @@
+.sr-only {
+  display: none;
+}
+.actionBtnContainer {
+  display: flex;
+}
+.actionBtnContainer > button {
+  border: 0;
+  margin: 0 5px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.4rem 1rem;
+  &:hover {
+    background-color: #c9c9c9;
+  }
+}
+.actionBtnContainer > button > span {
+  margin-left: 0.3rem;
+}
+.add-modal__header {
+  background-color: #198754;
+  color: #fff;
+}
+.addBtn {
+  background-color: #198754;
+  font-weight: 500;
+  padding: 0.5rem 1.5rem;
+  &:hover {
+    background-color: #136d43;
+  }
+}
+.update-modal__header {
+  background-color: #fe9a2e;
+}
+.updateBtn {
+  background-color: #fe9a2e;
+  color: #000;
+  font-weight: 500;
+  padding: 0.5rem 0.7rem;
+  &:hover {
+    background-color: #cc7b24;
+    color: #000;
+  }
+}
+.delete-modal__header {
+  background-color: #dc3545;
+  color: #fff;
+}
+.deleteBtn {
+  background-color: #dc3545;
+  font-weight: 500;
+  padding: 0.5rem 1.8rem;
+  &:hover {
+    background-color: #c22d3c;
+  }
+}
+.cancleBtn {
+  background-color: #6c757d;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  &:hover {
+    background-color: #585858;
+  }
+}
+.modal-footer {
+  justify-content: center;
+}
+.close {
+  border-radius: 0.3rem;
+  span {
+    font-weight: 800;
+  }
+}
+.rct-node-icon {
+  display: none;
+}
