@@ -1,4 +1,4 @@
-/* .signup-container {
+.signup-container {
     background-image: url("../../images/test9.jpg");
     width: 100%;
     min-height: 100vh;
@@ -6,10 +6,10 @@
     align-items: center;
     justify-content: center;
     background-size: cover;
-    padding: 3rem 0;
+    padding: 3.5rem 0;
 }
 .signup {
-    padding: 4.5rem;
+    padding: 1.5rem 4.5rem;
     background-color: rgba(255, 255, 255, 0.7);
     width: 100%;
     max-width: 55rem;
@@ -33,13 +33,13 @@
 .signup-input {
     display: block;
     width: 100%;
-    padding: 1.5rem;
+    padding: 1.3rem;
     border-radius: 1rem;
-    background-color: #f2f3f5;
+    background-color: rgb(232, 240, 254);
     outline: none;
     border: 0;
     font-family: "Roboto", sans-serif;
-    font-size: 1.25rem;
+    font-size: 1rem;
 }
 .signup-submit {
     padding: 1.5rem;
@@ -54,7 +54,8 @@
     cursor: pointer;
     font-weight: 500;
     box-shadow: 0 0 10px 0 rgba(17, 35, 39, 0.9);
-    margin: 1.5rem auto;
+    margin: 1.5rem 0;
+    width: 100%;
 }
 .signup-submit:hover {
     background-color: rgba(17, 35, 39, 0.9);
@@ -71,4 +72,5 @@
 .signup-login-link {
     color: #2979ff;
     text-decoration: none;
-} */
+    font-weight: 600;
+}

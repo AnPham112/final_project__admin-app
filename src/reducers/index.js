@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
   product: productReducer,
   order: orderReducer,
   category: categoryReducer,
-  page: pageReducer,
+  page: pageReducer
 });
 
 export default rootReducer;

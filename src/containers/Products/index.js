@@ -91,9 +91,9 @@ const Products = (props) => {
                 <tr key={product._id}>
                   <td>{index + 1}</td>
                   <td>{product.name}</td>
-                  <td>{product.price}</td>
+                  <td>${product.price}</td>
                   <td>{product.quantity}</td>
-                  <td>{product.category.name}</td>
+                  <td>{product.category?.name}</td>
                   <td>
                     <button
                       onClick={() => showProductDetailsModal(product)}
@@ -173,24 +173,6 @@ const Products = (props) => {
           placeholder={'Select category'}
           options={createCategoryList(category.categories)}
         />
-        {/* <select
-          className="form__select"
-          value={categoryId}
-          onChange={(e) => setCategoryId(e.target.value)}
-        >
-          <option>Select category</option>
-          {
-            createCategoryList(category.categories).map(option =>
-              <option
-                key={option.value}
-                value={option.value}
-              >
-                {option.name}
-              </option>
-            )
-          }
-        </select> */}
-
         <label className="label-input-file">Product pictures</label>
         <input
           type="file"
@@ -210,7 +192,6 @@ const Products = (props) => {
   const handleCloseProductDetaislModal = () => {
     setProductDetailModal(false);
   }
-
 
   const showProductDetailsModal = (product) => {
     setProductDetails(product);
@@ -243,7 +224,7 @@ const Products = (props) => {
           </Col>
           <Col md="6">
             <label className="key">Category</label>
-            <p className="value">{productDetails.category.name}</p>
+            <p className="value">{productDetails.category?.name}</p>
           </Col>
           <Col md="12">
             <label className="key">Description</label>
@@ -265,7 +246,6 @@ const Products = (props) => {
       </Modal>
     );
   }
-
 
   return (
     <Layout sidebar>
@@ -292,8 +272,7 @@ const Products = (props) => {
       {renderAddProductModal()}
       {renderProductDetailsModal()}
     </Layout>
-  )
-
+  );
 }
 
-export default Products
+export default Products;

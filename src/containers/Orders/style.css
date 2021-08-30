@@ -14,6 +14,14 @@
     display: flex;
     justify-content: flex-end;
 }
+.btnConfirm-container button {
+    border: 0;
+    outline: none;
+    color: #fff;
+    background-color: rgb(233, 97, 0);
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+}
 .orderStatus {
     width: 30%;
     height: 5px;

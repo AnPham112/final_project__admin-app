@@ -12,18 +12,16 @@ const Orders = (props) => {
   const dispatch = useDispatch();
 
   const onOrderUpdate = (orderId) => {
-    const payload = {
-      orderId,
-      type
-    };
+    const payload = { orderId, type };
     dispatch(updateOrder(payload));
   }
 
   useEffect(() => {
     if (auth.authenticate) {
-      dispatch(getCustomerOrders());
+      dispatch(getCustomerOrders())
     }
-  }, [auth.authenticate]);
+
+  }, [auth.authenticate, getCustomerOrders])
 
   const formatDate = (date) => {
     if (date) {
@@ -37,7 +35,11 @@ const Orders = (props) => {
     <Layout sidebar>
       {
         order.orders.map((orderItem, index) => (
-          <Card key={index} headerLeft={orderItem._id}>
+          <Card
+            style={{ backgroundColor: 'rgb(214,214,214)' }}
+            cardHeaderStyle={{ backgroundColor: 'rgb(54, 54, 54)', padding: '20px 50px', color: '#fff' }}
+            key={index}
+            headerLeft={orderItem._id}>
             <div
               style={{
                 display: "flex",
@@ -73,7 +75,9 @@ const Orders = (props) => {
               <div className="orderTrack">
                 {orderItem.orderStatus.map((status) => (
                   <div
-                    className={`orderStatus ${status.isCompleted ? "active" : ""}`}
+                    className={`orderStatus 
+                    ${status.isCompleted ? "active" : ""
+                      }`}
                   >
                     <div
                       className={`point ${status.isCompleted ? "active" : ""}`}
@@ -88,16 +92,20 @@ const Orders = (props) => {
 
               {/* select input to apply order action */}
               <div className="selectStatusContainer">
-                <select class="form-select" onChange={(e) => setType(e.target.value)}>
+                <select className="form-select" onChange={(e) => setType(e.target.value)}>
                   <option value={""}>Select status</option>
                   {orderItem.orderStatus.map((status) => {
-                    return <>
-                      {!status.isCompleted ? (
-                        <option key={status.type} value={status.type}>
-                          {status.type}
-                        </option>
-                      ) : null}
-                    </>
+                    return (
+                      <>
+                        {!status.isCompleted ? (
+                          <option
+                            key={status.type}
+                            value={status.type}>
+                            {status.type}
+                          </option>
+                        ) : null}
+                      </>
+                    );
                   })}
                 </select>
               </div>

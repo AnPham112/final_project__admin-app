@@ -227,7 +227,7 @@ const Category = (props) => {
         <Row>
           <Col md={12}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <h3>Category</h3>
+              <h3>Category list</h3>
               <div className="actionBtnContainer">
                 <button onClick={handleShow}><IoIosAdd /><span>Add</span></button>
                 <button onClick={updateCategory}><IoIosCloudUpload /><span>Edit</span></button>

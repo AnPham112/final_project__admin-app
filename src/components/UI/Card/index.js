@@ -5,7 +5,7 @@ const Card = (props) => {
   return (
     <div className="card" {...props}>
       {(props.headerLeft || props.headerRight) && (
-        <div className="cardHeader">
+        <div className="cardHeader" style={props.cardHeaderStyle}>
           {props.headerLeft && <div>{props.headerLeft}</div>}
           {props.headerRight && props.headerRight}
         </div>

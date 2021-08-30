@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Table } from 'react-bootstrap';
 import Layout from '../../components/Layout';
 import Modal from '../../components/UI/Modal';
 import Input from '../../components/UI/Input';
 import linearCategories from '../../helpers/linearCategories';
-import { createPage } from '../../actions';
+import {
+  createPage,
+  deletePageById,
+  getAllPages
+} from '../../actions';
 import './style.css';
+
 const NewPage = (props) => {
   const [createModal, setCreateModal] = useState(false);
   const [title, setTitle] = useState('');
@@ -21,7 +26,6 @@ const NewPage = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('category', category);
     setCategories(linearCategories(category.categories));
   }, [category]);
 
@@ -37,6 +41,9 @@ const NewPage = (props) => {
     }
   }, [page]);
 
+  useEffect(() => {
+    dispatch(getAllPages());
+  }, []);
   const onCategoryChange = (e) => {
     const category = categories.find(category =>
       category.value == e.target.value);
@@ -152,6 +159,55 @@ const NewPage = (props) => {
     )
   }
 
+  const renderPages = () => {
+    return (
+      <Table className="pageTable-container" responsive="sm">
+        <thead>
+          <tr>
+            <th className="page-index">#</th>
+            <th className="page-title">Title</th>
+            <th className="page-description">Description</th>
+            <th className="page-banners">Banner(s)</th>
+            <th className="page-products">Product(s)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            page.pages.length > 0
+              ? page.pages.map((page, index) => (
+                <tr key={page._id}>
+                  <td className="page-index">{index + 1}</td>
+                  <td className="page-title">{page.title}</td>
+                  <td className="page-description">{page.description}</td>
+                  <td className="page-banners">
+                    {page.banners?.map((banner, index) => (
+                      <img className="banner-size" src={banner?.img} alt="123" />
+                    ))}
+                  </td>
+                  <td className="page-products">
+                    {page.products?.map((product, index) => (
+                      <img className="product-size" src={product?.img} alt="123" />
+                    ))}
+                  </td>
+                  <td>
+                    <button
+                      className="deletePage-btn"
+                      onClick={() => {
+                        const payload = { pageId: page._id };
+                        dispatch(deletePageById(payload));
+                      }}>Delete</button>
+                  </td>
+                </tr>
+              ))
+              : null
+          }
+        </tbody>
+      </Table>
+    )
+  }
+
+
+
   return (
     <Layout sidebar>
       {
@@ -161,13 +217,14 @@ const NewPage = (props) => {
           <>
             {renderCreatePageModal()}
             <button
+              className="createPage-btn"
               onClick={() => setCreateModal(true)}
             >
               Create Page
             </button>
-            {/* {JSON.stringify({ page })} */}
           </>
       }
+      {renderPages()}
     </Layout>
   )
 }

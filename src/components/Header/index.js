@@ -11,6 +11,7 @@ const Header = (props) => {
 
   const logout = () => {
     dispatch(signout());
+    return <Redirect to={`/`} />
   }
 
   const renderLoggedInLinks = () => {
@@ -32,19 +33,30 @@ const Header = (props) => {
     return (
       <Nav>
         <li className="nav-item">
-          <NavLink to="/signin" className="nav-link">Signin</NavLink>
+          <NavLink to="/signin" className="nav-link">
+            Signin
+          </NavLink>
         </li>
         <li className="nav-item">
-          <NavLink to="/signup" className="nav-link">Signup</NavLink>
+          <NavLink to="/signup" className="nav-link">
+            Signup
+          </NavLink>
         </li>
       </Nav>
     );
   }
+
   return (
-    <Navbar collapseOnSelect fixed="top" expand="lg" bg="dark" variant="dark" className="admin-navbar">
+    <Navbar
+      collapseOnSelect
+      fixed="top"
+      expand="lg"
+      bg="dark"
+      variant="dark"
+      className="admin-navbar"
+    >
       <Container fluid>
         <Link to="/" className="navbar-brand">Admin Dashboard</Link>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         {auth.authenticate ? renderLoggedInLinks() : renderNonLoggedInLinks()}
       </Container>
     </Navbar>

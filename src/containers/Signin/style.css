@@ -10,7 +10,7 @@
 }
 .signin {
     padding: 6rem;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.6);
     width: 100%;
     max-width: 37.5rem;
     border-radius: 1.25rem;
@@ -35,12 +35,10 @@
     width: 100%;
     padding: 1.5rem;
     border-radius: 1rem;
-    background-color: #f2f3f5;
     outline: none;
     border: 0;
     font-family: "Roboto", sans-serif;
-    font-size: 1.25rem;
-    /* margin-bottom: 1.875rem; */
+    font-size: 1rem;
 }
 .signin-submit {
     padding: 1.5rem;

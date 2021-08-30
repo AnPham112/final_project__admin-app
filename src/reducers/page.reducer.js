@@ -3,7 +3,8 @@ import { pageConstants } from "../actions/constants"
 const initState = {
   error: null,
   loading: false,
-  page: {}
+  page: {},
+  pages: []
 }
 
 export default (state = initState, action) => {
@@ -21,6 +22,26 @@ export default (state = initState, action) => {
       }
       break;
     case pageConstants.CREATE_PAGE_FAILURE:
+      state = {
+        ...state,
+        loading: false,
+        error: action.payload.error
+      }
+      break;
+    case pageConstants.GET_ALL_PAGES_REQUEST:
+      state = {
+        ...state,
+        loading: true
+      }
+      break;
+    case pageConstants.GET_ALL_PAGES_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        pages: action.payload.pages
+      }
+      break;
+    case pageConstants.GET_ALL_PAGES_FAILURE:
       state = {
         ...state,
         loading: false,
