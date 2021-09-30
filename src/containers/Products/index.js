@@ -1,25 +1,20 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Col, Container, Row, Table } from 'react-bootstrap';
+import { Col, Container, Row, Form } from 'react-bootstrap';
 import Layout from '../../components/Layout';
-import Input from '../../components/UI/Input';
 import Modal from '../../components/UI/Modal';
+import Select from '../../components/UI/Select';
 import { addProduct, deleteProductById } from '../../actions/product.action';
 import { generatePublicUrl } from '../../urlConfig';
+import { IoIosAdd } from 'react-icons/io';
+import { BsTrash, BsEye } from "react-icons/bs";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { ToastContainer, toast } from 'react-toastify';
 import './style.scss';
-import {
-  IoIosArrowForward,
-  IoIosArrowDown,
-  IoIosAdd,
-  IoIosTrash,
-  IoIosCloudUpload
-} from 'react-icons/io';
 
 const Products = (props) => {
-  const [name, setName] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
   const [categoryId, setCategoryId] = useState('');
   const [productPictures, setProductPictures] = useState([]);
   const [show, setShow] = useState(false);
@@ -32,26 +27,45 @@ const Products = (props) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const submitProductForm = () => {
-    const form = new FormData();
-    form.append("name", name);
-    form.append("quantity", quantity);
-    form.append("price", price);
-    form.append("description", description);
-    form.append("category", categoryId);
+  const validationSchema = yup.object().shape({
+    name: yup.string()
+      .max(50, 'Category name is too long')
+      .required('Category is required'),
+    quantity: yup.number()
+      .typeError('Quantity is required'),
+    price: yup.number()
+      .typeError('Price is required'),
+    description: yup.string()
+      .max(200, 'Description is too long')
+      .required('Description is required'),
+  });
 
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+    mode: 'onChange',
+    resolver: yupResolver(validationSchema),
+  });
+
+  const submitProductForm = (data) => {
+    const form = new FormData();
+    form.append("name", data.name);
+    form.append("quantity", data.quantity);
+    form.append("price", data.price);
+    form.append("description", data.description);
+    form.append("category", categoryId);
     for (let pic of productPictures) {
       form.append("productPicture", pic);
     }
-
     dispatch(addProduct(form)).then(() =>
       setShow(false),
-      setName(''),
-      setQuantity(''),
-      setPrice(''),
-      setDescription(''),
       setCategoryId(''),
       setProductPictures([]),
+      reset({
+        name: "",
+        quantity: "",
+        price: "",
+        description: ""
+      }),
+      toast.success("Add product successfully!", { autoClose: 2000, theme: 'dark' })
     );
   };
 
@@ -74,7 +88,7 @@ const Products = (props) => {
 
   const renderProducts = () => {
     return (
-      <Table style={{ fontSize: 12 }} responsive="sm">
+      <table className="content-table">
         <thead>
           <tr>
             <th>#</th>
@@ -82,44 +96,46 @@ const Products = (props) => {
             <th>Price</th>
             <th>Quantity</th>
             <th>Category</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {
-            product.products.length > 0
-              ? product.products.map((product, index) => (
-                <tr key={product._id}>
-                  <td>{index + 1}</td>
-                  <td>{product.name}</td>
-                  <td>${product.price}</td>
-                  <td>{product.quantity}</td>
-                  <td>{product.category?.name}</td>
-                  <td>
-                    <button
-                      onClick={() => showProductDetailsModal(product)}
-                      className="btn-view-product"
-                    >
-                      View
-                    </button>
-                    <button
-                      className="btn-delete-product"
-                      onClick={() => {
-                        const payload = {
-                          productId: product._id,
-                        };
-                        dispatch(deleteProductById(payload));
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
-              : null
+          {product.products.length > 0
+            ? product.products.map((product, index) => (
+              <tr key={product._id}>
+                <td>{index + 1}</td>
+                <td>{product.name}</td>
+                <td>${product.price}</td>
+                <td>{product.quantity}</td>
+                <td>{product.category?.name}</td>
+                <td>
+                  <button
+                    onClick={() => showProductDetailsModal(product)}
+                    className="btn-view-product"
+                  >
+                    <BsEye />
+                  </button>
+                  <button
+                    className="btn-delete-product"
+                    onClick={() => {
+                      const payload = {
+                        productId: product._id,
+                      };
+                      dispatch(deleteProductById(payload)).then(() =>
+                        toast.success("Delete product successfully!", { autoClose: 2000, theme: 'dark' })
+                      )
+                    }}
+                  >
+                    <BsTrash />
+                  </button>
+                </td>
+              </tr>
+            ))
+            : null
           }
         </tbody>
-      </Table>
-    )
+      </table>
+    );
   }
 
   const renderAddProductModal = () => {
@@ -132,7 +148,7 @@ const Products = (props) => {
           {
             label: 'Add',
             btnColor: 'addBtn',
-            onClick: submitProductForm
+            onClick: handleSubmit(submitProductForm)
           },
           {
             label: 'Cancle',
@@ -140,34 +156,68 @@ const Products = (props) => {
             onClick: handleClose
           }
         ]}>
-        <Input
-          type={'text'}
-          placeholder={'Product Name'}
-          value={name}
-          onChange={(e) => { setName(e.target.value) }}
-        />
-        <Input
-          placeholder="Quantity"
-          type="number"
-          value={quantity}
-          onChange={(e) => { setQuantity(e.target.value) }}
-        />
-        <Input
-          className="input-modal"
-          placeholder="Price"
-          type="number"
-          value={price}
-          onChange={(e) => { setPrice(e.target.value) }}
-        />
-        <Input
-          className="input-modal"
-          placeholder="Description"
-          type="text"
-          value={description}
-          onChange={(e) => { setDescription(e.target.value) }}
-        />
-        <Input
-          type="select"
+        <Form.Group>
+          <Form.Control
+            className="form__input"
+            type="text"
+            name="name"
+            placeholder="Product Name"
+            {...register("name")}
+            isInvalid={errors.name}
+          />
+          {errors.name && (
+            <Form.Control.Feedback type="invalid">
+              {errors.name?.message}
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            className="form__input"
+            type="number"
+            name="quantity"
+            placeholder="Quantity"
+            {...register("quantity")}
+            isInvalid={errors.quantity}
+          />
+          {errors.quantity && (
+            <Form.Control.Feedback type="invalid">
+              {errors.quantity?.message}
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            className="form__input"
+            type="number"
+            name="price"
+            placeholder="Price"
+            {...register("price")}
+            isInvalid={errors.price}
+          />
+          {errors.price && (
+            <Form.Control.Feedback type="invalid">
+              {errors.price?.message}
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            className="form__input"
+            as="textarea"
+            name="description"
+            placeholder="Description"
+            {...register("description")}
+            isInvalid={errors.description}
+            style={{ height: '100px' }}
+          />
+          {errors.description && (
+            <Form.Control.Feedback type="invalid">
+              {errors.description?.message}
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
+        <Select
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
           placeholder={'Select category'}
@@ -192,7 +242,6 @@ const Products = (props) => {
   const handleCloseProductDetaislModal = () => {
     setProductDetailModal(false);
   }
-
   const showProductDetailsModal = (product) => {
     setProductDetails(product);
     setProductDetailModal(true);
@@ -208,35 +257,41 @@ const Products = (props) => {
         handleClose={handleCloseProductDetaislModal}
         modalTitle={'Product Details'}
         size="lg"
-      >
+        buttons={[
+          {
+            label: 'Close',
+            btnColor: 'cancleBtn',
+            onClick: handleCloseProductDetaislModal
+          }
+        ]}>
         <Row>
-          <Col md="6">
+          <Col md={6}>
             <label className="key">Name</label>
             <p className="value">{productDetails.name}</p>
           </Col>
-          <Col md="6">
+          <Col md={6}>
             <label className="key">Price</label>
             <p className="value">{productDetails.price}</p>
           </Col>
-          <Col md="6">
+          <Col md={6}>
             <label className="key">Quantity</label>
             <p className="value">{productDetails.quantity}</p>
           </Col>
-          <Col md="6">
+          <Col md={6}>
             <label className="key">Category</label>
             <p className="value">{productDetails.category?.name}</p>
           </Col>
-          <Col md="12">
+          <Col md={12}>
             <label className="key">Description</label>
-            <p className="value">{productDetails.desciption}</p>
+            <p className="value">{productDetails.description}</p>
           </Col>
         </Row>
         <Row>
           <Col>
             <label className="key">Product Pictures</label>
             <div className="pictureList">
-              {productDetails.productPictures.map(picture =>
-                <div className="productImgContainer">
+              {productDetails.productPictures.map((picture, index) =>
+                <div key={index} className="productImgContainer">
                   <img src={generatePublicUrl(picture.img)} alt="" />
                 </div>
               )}
@@ -254,9 +309,7 @@ const Products = (props) => {
           <Col md={12}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <h3>Products</h3>
-              <button
-                className="btn-add-product"
-                onClick={handleShow}
+              <button className="btn-add-product" onClick={handleShow}
               >
                 <IoIosAdd /><span>Add</span>
               </button>
@@ -271,6 +324,7 @@ const Products = (props) => {
       </Container>
       {renderAddProductModal()}
       {renderProductDetailsModal()}
+      <ToastContainer />
     </Layout>
   );
 }

@@ -9,7 +9,7 @@ const initState = {
 const buildNewCategories = (parentId, categories, category) => {
   let myCategories = [];
 
-  if (parentId == undefined) {
+  if (parentId === undefined) {
     return [
       ...categories,
       {
@@ -23,7 +23,7 @@ const buildNewCategories = (parentId, categories, category) => {
   }
 
   categories.map((cat) => {
-    if (cat._id == parentId) {
+    if (cat._id === parentId) {
       const newCategory = {
         _id: category._id,
         name: category.name,
@@ -67,7 +67,6 @@ export default (state = initState, action) => {
     case categoryConstants.ADD_NEW_CATEGORY_SUCCESS:
       const category = action.payload.category;
       const updatedCategories = buildNewCategories(category.parentId, state.categories, category);
-      console.log('updated categoires', updatedCategories);
       state = {
         ...state,
         categories: updatedCategories,

@@ -1,8 +1,7 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
-
-import Input from '../../../components/UI/Input';
+import { Row, Col, Form } from 'react-bootstrap';
 import Modal from '../../../components/UI/Modal';
+import Select from '../../../components/UI/Select';
 
 const UpdateCategoriesModal = (props) => {
   const {
@@ -16,8 +15,6 @@ const UpdateCategoriesModal = (props) => {
     handleCategoryInput,
     categoryList
   } = props;
-
-  console.log({ expandedArray, checkedArray });
 
   return (
     <Modal
@@ -49,48 +46,34 @@ const UpdateCategoriesModal = (props) => {
         expandedArray.length > 0 &&
         expandedArray.map((item, index) =>
           <Row key={index}>
-            <Col>
-              <Input
-                value={item.name}
-                placeholder={'Category Name'}
-                onChange={(e) => handleCategoryInput('name', e.target.value, index, 'expanded')}
-              />
+            <Col sm={4} sx={12}>
+              <Form.Group>
+                <Form.Control
+                  className="form__input"
+                  type="text"
+                  value={item.name}
+                  placeholder="Category name"
+                  onChange={(e) => handleCategoryInput('name', e.target.value, index, 'expanded')}
+                />
+              </Form.Group>
             </Col>
             <Col>
-              <Input
-                type="select"
+              <Select
                 value={item.parentId}
                 onChange={(e) => handleCategoryInput('parentId', e.target.value, index, 'expanded')}
                 placeholder={'Select category'}
                 options={categoryList}
               />
-              {/* <select
-                value={item.parentId}
-                onChange={(e) => handleCategoryInput('parentId', e.target.value, index, 'expanded')}
-              >
-                <option>----Select category----</option>
-                {
-                  categoryList.map(option =>
-                    <option
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.name}
-                    </option>
-                  )
-                }
-              </select> */}
             </Col>
-            <Col>
+            <Col sm={4} sx={12}>
               <select
-                className="form-control"
+                className="form-select"
                 value={item.type}
                 onChange={(e) => handleCategoryInput('type', e.target.value, index, 'expanded')}
               >
-                <option value="">Select Type</option>
+                <option value="" className="select-placeholder">---Select Type---</option>
                 <option value="store">Store</option>
-                <option value="product">Product</option>
-                <option value="page">Page</option>
+                {/* <option value="page">Page</option> */}
               </select>
             </Col>
           </Row>
@@ -101,55 +84,41 @@ const UpdateCategoriesModal = (props) => {
         checkedArray.length > 0 &&
         checkedArray.map((item, index) =>
           <Row key={index}>
-            <Col>
-              <Input
-                value={item.name}
-                placeholder={'Category Name'}
-                onChange={(e) => handleCategoryInput('type', e.target.value, index, 'checked')}
-              />
+            <Col sm={4} sx={12}>
+              <Form.Group>
+                <Form.Control
+                  className="form__input"
+                  type="text"
+                  value={item.name}
+                  placeholder="Category name"
+                  onChange={(e) => handleCategoryInput('name', e.target.value, index, 'checked')}
+                />
+              </Form.Group>
             </Col>
-            <Col>
-              <Input
-                type="select"
+            <Col sm={4} sx={12}>
+              <Select
                 value={item.parentId}
                 onChange={(e) => handleCategoryInput('parentId', e.target.value, index, 'checked')}
                 placeholder={'Select category'}
                 options={categoryList}
               />
-              {/* <select
-                value={item.parentId}
-                onChange={(e) => handleCategoryInput('parentId', e.target.value, index, 'checked')}
-              >
-                <option>Select category</option>
-                {
-                  categoryList.map(option =>
-                    <option
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.name}
-                    </option>
-                  )
-                }
-              </select> */}
             </Col>
-            <Col>
+            <Col sm={4} sx={12}>
               <select
-                className="form-control"
+                className="form-select"
                 value={item.type}
                 onChange={(e) => handleCategoryInput('type', e.target.value, index, 'checked')}
               >
-                <option value="">Select Type</option>
+                <option value="" className="select-placeholder">---Select Type---</option>
                 <option value="store">Store</option>
-                <option value="product">Product</option>
-                <option value="page">Page</option>
+                {/* <option value="page">Page</option> */}
               </select>
             </Col>
           </Row>
         )
       }
     </Modal>
-  )
+  );
 }
 
 export default UpdateCategoriesModal;

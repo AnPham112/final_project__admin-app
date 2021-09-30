@@ -4,7 +4,7 @@
     bottom: 0;
     left: 0;
     background-color: #eee;
-    padding-top: 60px;
+    padding-top: 62px;
     box-shadow: 0 0 2px rgb(97, 97, 97);
 }
 .sidebar a {
@@ -26,10 +26,10 @@
     text-decoration: none;
 }
 .sidebar ul li a.active {
-    background-color: rgb(54, 54, 54);
+    background-color: rgba(20, 45, 52, 0.9);
     color: white;
 }
 .admin-container {
     margin-left: auto;
-    padding-top: 60px;
+    padding-top: 62px;
 }

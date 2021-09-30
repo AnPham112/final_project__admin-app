@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addCategory,
@@ -20,17 +20,19 @@ import {
   IoIosTrash,
   IoIosCloudUpload
 } from 'react-icons/io';
-
-import './style.scss';
 import Layout from '../../components/Layout';
 import Modal from '../../components/UI/Modal';
 import UpdateCategoriesModal from './components/UpdateCategoriesModal';
-import AddCategoryModal from './components/AddCategoriesModal';
-
+import Select from '../../components/UI/Select';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import './style.scss';
 
 const Category = (props) => {
   const category = useSelector(state => state.category);
-  const [categoryName, setCategoryName] = useState('');
   const [parentCategoryId, setParentCategoryId] = useState('');
   const [categoryImage, setCategoryImage] = useState('');
   const [show, setShow] = useState(false);
@@ -49,23 +51,19 @@ const Category = (props) => {
   }, [category.loading]);
 
   useEffect(() => {
-    console.log('category.js')
     dispatch(getAllCategory());
   }, []);
 
-  const addCategoryForm = () => {
-    if (categoryName === "") {
-      alert("Name is required");
-      return;
-    }
+  const addCategoryForm = (data) => {
     const form = new FormData();
-    form.append('name', categoryName);
+    form.append('name', data.categoryName);
     form.append('parentId', parentCategoryId);
     form.append('categoryImage', categoryImage);
-    dispatch(addCategory(form));
-    setCategoryName('');
-    setParentCategoryId('');
-    setShow(false);
+    dispatch(addCategory(form)).then(() =>
+      reset({ categoryName: '' }),
+      setParentCategoryId(''),
+      setShow(false)
+    );
   }
 
   const handleShow = () => setShow(true);
@@ -114,12 +112,12 @@ const Category = (props) => {
     const expandedArray = [];
     checked.length > 0 && checked.forEach((categoryId, index) => {
       const category = categories.find((category, _index) =>
-        categoryId == category.value)
+        categoryId === category.value)
       category && checkedArray.push(category)
     })
     expanded.length > 0 && expanded.forEach((categoryId, index) => {
       const category = categories.find((category, _index) =>
-        categoryId == category.value)
+        categoryId === category.value)
       category && expandedArray.push(category)
     })
     setCheckedArray(checkedArray);
@@ -127,13 +125,14 @@ const Category = (props) => {
   }
 
   const handleCategoryInput = (key, value, index, type) => {
-    if (type == "checked") {
+    if (type === "checked") {
       const updatedCheckedArray = checkedArray.map((item, _index) =>
-        index == _index ? { ...item, [key]: value } : item);
+        index === _index ? { ...item, [key]: value } : item);
       setCheckedArray(updatedCheckedArray);
-    } else if (type == "expanded") {
+    }
+    else if (type === "expanded") {
       const updatedExpandedArray = expandedArray.map((item, _index) =>
-        index == _index ? { ...item, [key]: value } : item);
+        index === _index ? { ...item, [key]: value } : item);
       setExpandedArray(updatedExpandedArray);
     }
   }
@@ -152,7 +151,7 @@ const Category = (props) => {
       form.append('parentId', item.parentId ? item.parentId : "");
       form.append('type', item.type);
     });
-    dispatch(updateCategories(form));
+    dispatch(updateCategories(form))
     setUpdateCategoryModal(false);
   }
 
@@ -162,23 +161,23 @@ const Category = (props) => {
   }
 
   const deleteCategories = () => {
-    const checkedIdsArray = checkedArray.map((item, index) =>
-      ({ _id: item.value }))
-    const expandedIdsArray = expandedArray.map((item, index) =>
-      ({ _id: item.value }))
-    const idsArray = expandedIdsArray.concat(checkedIdsArray)
+    const checkedIdsArray = checkedArray.map((item, index) => ({ _id: item.value }));
     if (checkedIdsArray.length > 0) {
       dispatch(deleteCategoriesAction(checkedIdsArray))
-        // dispatch(deleteCategoriesAction(idsArray))
-        .then(result => {
-          if (result) {
-            dispatch(getAllCategory());
-            setDeleteCategoryModal(false);
-          }
-        });
     }
     setDeleteCategoryModal(false);
   }
+
+  const validationSchema = yup.object().shape({
+    categoryName: yup.string()
+      .max(50, 'Category name is too long')
+      .required('Category is required')
+  });
+
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+    mode: 'onChange',
+    resolver: yupResolver(validationSchema),
+  });
 
   const renderDeleteCategoryModal = () => {
     return (
@@ -205,21 +204,79 @@ const Category = (props) => {
         <h6>Expanded</h6>
         {
           expandedArray.map((item, index) =>
-            <span key={index}>{item.name}| </span>
+            <span key={index}>{item.name}&nbsp;|&nbsp;</span>
           )
         }
         <h6>Checked</h6>
         {
           checkedArray.map((item, index) =>
-            <span key={index}>{item.name}| </span>
+            <span key={index}>{item.name}&nbsp;|&nbsp;</span>
           )
         }
       </Modal>
-    )
+    );
   }
 
   const categoryList = createCategoryList(category.categories);
 
+  const renderAddCategoryModal = () => {
+    return (
+      <Modal
+        show={show}
+        handleClose={() => setShow(false)}
+        modalTitle={'Add new Category'}
+        modalHeaderColor="add-modal__header"
+        buttons={[
+          {
+            label: 'Add',
+            btnColor: 'addBtn',
+            onClick: handleSubmit(addCategoryForm)
+          },
+          {
+            label: 'Cancle',
+            btnColor: 'cancleBtn',
+            onClick: () => setShow(false)
+          }
+        ]}
+      >
+        <Row>
+          <Col>
+            <Form.Group>
+              <Form.Control
+                className="form__input"
+                type="text"
+                name="categoryName"
+                placeholder="Category name"
+                {...register("categoryName")}
+                isInvalid={errors.categoryName}
+              />
+              {errors.categoryName && (
+                <Form.Control.Feedback type="invalid">
+                  {errors.categoryName?.message}
+                </Form.Control.Feedback>
+              )}
+            </Form.Group>
+          </Col>
+          <Col>
+            <Select
+              value={parentCategoryId}
+              onChange={(e) => setParentCategoryId(e.target.value)}
+              placeholder={'Select category'}
+              options={categoryList}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <input
+              type="file"
+              name="categoryImage"
+              onChange={handleCategoryImage} />
+          </Col>
+        </Row>
+      </Modal>
+    );
+  }
 
   return (
     <Layout sidebar>
@@ -254,35 +311,23 @@ const Category = (props) => {
             />
           </Col>
         </Row>
+        {renderAddCategoryModal()}
+        <UpdateCategoriesModal
+          show={updateCategoryModal}
+          handleClose={() => setUpdateCategoryModal(false)}
+          onSubmit={updateCategoriesForm}
+          modalTitle={'Update Categories'}
+          size="lg"
+          expandedArray={expandedArray}
+          checkedArray={checkedArray}
+          handleCategoryInput={handleCategoryInput}
+          categoryList={categoryList}
+        />
+        {renderDeleteCategoryModal()}
       </Container>
-      <AddCategoryModal
-        show={show}
-        handleClose={() => setShow(false)}
-        onSubmit={addCategoryForm}
-        modalTitle={'Add new Category'}
-        categoryName={categoryName}
-        setCategoryName={setCategoryName}
-        parentCategoryId={parentCategoryId}
-        setParentCategoryId={setParentCategoryId}
-        categoryList={categoryList}
-        handleCategoryImage={handleCategoryImage}
-      />
-      <UpdateCategoriesModal
-        show={updateCategoryModal}
-        handleClose={() => setUpdateCategoryModal(false)}
-        onSubmit={updateCategoriesForm}
-        modalTitle={'Update Categories'}
-        size="lg"
-        expandedArray={expandedArray}
-        expandedArray={expandedArray}
-        checkedArray={checkedArray}
-        handleCategoryInput={handleCategoryInput}
-        categoryList={categoryList}
-      />
-      {renderDeleteCategoryModal()}
+      <ToastContainer />
     </Layout>
-  )
-
+  );
 }
 
 export default Category;

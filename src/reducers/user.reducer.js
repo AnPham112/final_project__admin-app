@@ -3,7 +3,8 @@ import { userConstants } from "../actions/constants"
 const initState = {
   error: null,
   message: '',
-  loading: false
+  loading: false,
+  users: []
 }
 
 export default (state = initState, action) => {
@@ -21,7 +22,28 @@ export default (state = initState, action) => {
         message: action.payload.message
       }
       break;
-    case userConstants.USER_REGISTER_REQUEST:
+    case userConstants.USER_REGISTER_FAILURE:
+      state = {
+        ...state,
+        loading: false,
+        error: action.payload.error
+      }
+      break;
+
+    case userConstants.GET_ALL_USERS_REQUEST:
+      state = {
+        ...state,
+        loading: true
+      }
+      break;
+    case userConstants.GET_ALL_USERS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        users: action.payload.users
+      }
+      break;
+    case userConstants.GET_ALL_USERS_FAILURE:
       state = {
         ...state,
         loading: false,

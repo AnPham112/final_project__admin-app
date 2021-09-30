@@ -25,7 +25,8 @@
   background-color: #198754;
   font-weight: 500;
   padding: 0.5rem 1.5rem;
-  &:hover {
+  &:hover,
+  &:active {
     background-color: #136d43;
   }
 }
@@ -73,4 +74,8 @@
 }
 .rct-node-icon {
   display: none;
+}
+
+.form__input {
+  margin-bottom: 0.3rem;
 }

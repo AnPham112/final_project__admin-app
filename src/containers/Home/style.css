@@ -7,6 +7,17 @@
     padding-top: 60px;
     box-shadow: 0 0 2px rgb(97, 97, 97);
 }
-.admin-container {
-    margin-left: auto;
+.deleteUser-btn {
+    border: 0;
+    outline: none;
+    background-color: rgb(212, 0, 0);
+    color: #fff;
+    padding: 3px 5px 5px 5px;
+    border-radius: 3px;
+}
+.deleteUser-btn:hover {
+    background-color: rgb(158, 0, 0);
+}
+.userList {
+    margin-top: 1rem;
 }

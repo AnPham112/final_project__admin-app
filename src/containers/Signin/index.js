@@ -1,20 +1,40 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import './style.css';
 import { login } from '../../actions';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import Layout from '../../components/Layout';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import classnames from 'classnames';
+import './style.css';
 
 const Signin = (props) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
-  const userLogin = (e) => {
-    e.preventDefault();
-    const user = { email, password }
-    dispatch(login(user));
+  const validationSchema = yup.object().shape({
+    email: yup.string()
+      .max(60, 'Email is too long')
+      .required('Email is required')
+      .email('Enter a valid email'),
+    password: yup.string()
+      .required('Password is required')
+      .max(60, 'Password is too long')
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=^.{6,}$)/, 'Password must have at least 6 characters, 1 uppercase character, 1 number')
+  });
+
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+    mode: 'onChange',
+    resolver: yupResolver(validationSchema),
+  });
+
+  const userLogin = (inputValue) => {
+    dispatch(login(inputValue));
+    reset({
+      email: '',
+      password: ''
+    });
   }
 
   if (auth.authenticate) {
@@ -25,30 +45,40 @@ const Signin = (props) => {
     <Layout>
       <div className="signin-container">
         <div className="signin">
-          <h1 className="signin-heading">
-            Sign in
-          </h1>
-          <form onSubmit={userLogin} className="signin-form" autoComplete="off">
+          <h1 className="signin-heading">Sign in</h1>
+          <form
+            autoComplete="off"
+            className="signin-form"
+            onSubmit={handleSubmit(userLogin)}
+          >
             <label htmlFor="email" className="signin-label">Email</label>
             <input
-              type="text"
-              id="email"
-              className="signin-input"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type='email'
+              id='email'
+              name='email'
+              className={classnames("form-control", "signin-input", { "is-invalid": errors.email })}
+              {...register("email")}
             />
-            {/* <p className='err-message'>error</p> */}
+            {errors.email && (
+              <div className="invalid-feedback">{errors.email?.message}</div>
+            )}
             <label htmlFor="password" className="signin-label">Password</label>
             <input
-              type="password"
-              id="password"
-              className="signin-input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              type='password'
+              id='password'
+              name='password'
+              className={classnames("form-control", "signin-input", { "is-invalid": errors.password })}
+              {...register("password")}
             />
-            {/* <p className='err-message'>error</p> */}
+            {errors.password && (
+              <div className="invalid-feedback">{errors.password?.message}</div>
+            )}
             <button className="signin-submit">Sign in</button>
           </form>
+          <p className="signup-already">
+            <span>Have not an account yet?</span>
+            <Link to="/signup" className="signup-link">&nbsp;Sign up</Link>
+          </p>
         </div>
       </div>
     </Layout>

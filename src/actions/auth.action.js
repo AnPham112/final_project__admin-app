@@ -1,28 +1,40 @@
 import axios from "../helpers/axios";
 import { authConstants } from "./constants"
+import swal from 'sweetalert2';
 
-export const login = (user) => {
-  console.log(user);
+export const login = (inputValue) => {
   return async (dispatch) => {
     dispatch({ type: authConstants.LOGIN_REQUEST });
-    const res = await axios.post(`/admin/signin`, {
-      ...user
-    });
-    if (res.status === 200) {
-      const { token, user } = res.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-      dispatch({
-        type: authConstants.LOGIN_SUCCESS,
-        payload: { token, user }
-      });
-    } else {
-      if (res.status === 400) {
+    try {
+      const res = await axios.post(`/admin/signin`, { ...inputValue });
+      if (res.status === 200) {
+        const { token, user } = res.data;
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
         dispatch({
-          type: authConstants.LOGIN_FAILURE,
-          payload: { error: res.data.error }
+          type: authConstants.LOGIN_SUCCESS,
+          payload: { token, user }
         });
+        swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Login successfully'
+        })
+      } else {
+        if (res.status === 400) {
+          const { message } = res.data;
+          dispatch({
+            type: authConstants.LOGIN_FAILURE,
+            payload: { message }
+          });
+        }
       }
+    } catch (error) {
+      swal.fire({
+        icon: 'error',
+        title: 'Failure!',
+        text: error.response.data.message
+      })
     }
   }
 }
@@ -36,12 +48,13 @@ export const isUserLoggedIn = () => {
         type: authConstants.LOGIN_SUCCESS,
         payload: { token, user }
       });
-    } else {
-      dispatch({
-        type: authConstants.LOGIN_FAILURE,
-        payload: { error: 'Login failed' }
-      });
     }
+    // else {
+    //   dispatch({
+    //     type: authConstants.LOGIN_FAILURE,
+    //     payload: { error: 'Login failed' }
+    //   });
+    // }
   }
 }
 
