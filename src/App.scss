@@ -5,3 +5,17 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+@media screen and (max-width: 768px) {
+  .btn-delete-product {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 900.99px) {
+  .btn-delete-product {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+}

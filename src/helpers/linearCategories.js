@@ -1,5 +1,4 @@
 const linearCategories = (categories, options = []) => {
-
   for (let category of categories) {
     options.push({
       value: category._id,
@@ -11,7 +10,7 @@ const linearCategories = (categories, options = []) => {
       linearCategories(category.children, options)
     }
   }
-
   return options;
 }
+
 export default linearCategories;

@@ -51,7 +51,7 @@ const Orders = (props) => {
               </div>
               <div>
                 <span className="title">Total Price</span><br />
-                <span className="value">{orderItem.totalAmount}</span>
+                <span className="value">${orderItem.totalAmount}</span>
               </div>
               <div>
                 <span className="title">Payment Type</span><br />

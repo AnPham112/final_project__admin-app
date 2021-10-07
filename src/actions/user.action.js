@@ -2,37 +2,34 @@ import axios from "../helpers/axios";
 import { userConstants } from "./constants";
 import swal from 'sweetalert2';
 
-export const signup = (inputValue) => {
+export const signup = (user) => {
   return async (dispatch) => {
     dispatch({ type: userConstants.USER_REGISTER_REQUEST });
-    try {
-      const res = await axios.post(`/admin/signup`, { ...inputValue });
-      if (res.status === 201) {
-        const { message } = res.data;
+    const res = await axios.post(`/admin/signup`, { ...user });
+    if (res.status === 201) {
+      const { message } = res.data;
+      dispatch({
+        type: userConstants.USER_REGISTER_SUCCESS,
+        payload: { message }
+      });
+      swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: res.data.message
+      });
+    } else {
+      if (res.status === 400) {
+        const { error } = res.data;
         dispatch({
-          type: userConstants.USER_REGISTER_SUCCESS,
-          payload: { message }
+          type: userConstants.USER_REGISTER_FAILURE,
+          payload: { error }
         });
         swal.fire({
-          icon: 'success',
-          title: 'Success!',
-          text: res.data.message
-        });
-      } else {
-        if (res.status === 400) {
-          const { error } = res.data;
-          dispatch({
-            type: userConstants.USER_REGISTER_FAILURE,
-            payload: { error }
-          });
-        }
+          icon: 'error',
+          title: 'Failure!',
+          text: error.response.data.message
+        })
       }
-    } catch (error) {
-      swal.fire({
-        icon: 'error',
-        title: 'Failure!',
-        text: error.response.data.message
-      })
     }
   }
 }
