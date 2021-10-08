@@ -65,7 +65,7 @@ const Products = (props) => {
         price: "",
         description: ""
       }),
-      toast.success("Add product successfully!", { autoClose: 2000, theme: 'dark' })
+      toast.success("Add product successfully!", { autoClose: 1500, theme: 'dark' })
     );
   };
 
@@ -122,7 +122,7 @@ const Products = (props) => {
                         productId: product._id,
                       };
                       dispatch(deleteProductById(payload)).then(() =>
-                        toast.success("Delete product successfully!", { autoClose: 2000, theme: 'dark' })
+                        toast.success("Delete product successfully!", { autoClose: 1500, theme: 'dark' })
                       )
                     }}
                   >

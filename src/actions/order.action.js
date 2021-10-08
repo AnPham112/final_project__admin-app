@@ -34,7 +34,7 @@ export const updateOrder = (payload) => {
       if (res.status === 201) {
         dispatch({ type: orderConstants.UPDATE_CUSTOMER_ORDER_SUCCESS });
         dispatch(getCustomerOrders());
-        toast.success("Updated successfully!", { autoClose: 2000, theme: 'dark' });
+        toast.success("Updated successfully!", { autoClose: 1500, theme: 'dark' });
       } else {
         const { error } = res.data;
         dispatch({
