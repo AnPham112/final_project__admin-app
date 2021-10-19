@@ -29,8 +29,8 @@ const Products = (props) => {
 
   const validationSchema = yup.object().shape({
     name: yup.string()
-      .max(50, 'Category name is too long')
-      .required('Category is required'),
+      .max(50, 'Product name is too long')
+      .required('Product name is required'),
     quantity: yup.number()
       .typeError('Quantity is required'),
     price: yup.number()
@@ -64,8 +64,7 @@ const Products = (props) => {
         quantity: "",
         price: "",
         description: ""
-      }),
-      toast.success("Add product successfully!", { autoClose: 1500, theme: 'dark' })
+      })
     );
   };
 

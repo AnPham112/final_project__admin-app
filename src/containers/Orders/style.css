@@ -48,13 +48,13 @@
 }
 .orderInfo {
     height: 60px;
-    width: 55px;
+    width: 64px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: absolute;
     top: -26px;
-    transform: translateX(-50%);
+    transform: translateX(-30%);
 }
 .title {
     font-size: 14px;

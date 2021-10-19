@@ -8,6 +8,9 @@ const useStyles = makeStyles({
     if (type === 'orders') return { borderLeft: '5px solid #28a745' };
     else return { borderLeft: '5px solid gray' };
   },
+  cardContent: {
+    background: '#FAAC58'
+  },
   title: {
     fontSize: 16, marginBottom: 5
   },
@@ -20,7 +23,7 @@ const HighlightCard = ({ title, count, type }) => {
   const styles = useStyles({ type });
   return (
     <Card className={styles.wrapper}>
-      <CardContent>
+      <CardContent className={styles.cardContent}>
         <Typography
           component="p"
           variant="body2"

@@ -5,33 +5,33 @@ import swal from 'sweetalert2';
 export const login = (user) => {
   return async (dispatch) => {
     dispatch({ type: authConstants.LOGIN_REQUEST });
-    const res = await axios.post(`/admin/signin`, { ...user });
-    if (res.status === 200) {
-      const { token, user } = res.data;
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-      dispatch({
-        type: authConstants.LOGIN_SUCCESS,
-        payload: { token, user }
-      });
-      swal.fire({
-        icon: 'success',
-        title: 'Success!',
-        text: 'Login successfully'
-      })
-    } else {
-      if (res.status === 400) {
-        const { message } = res.data;
+    try {
+      const res = await axios.post(`/admin/signin`, { ...user });
+      if (res.status === 200) {
+        const { token, user } = res.data;
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
         dispatch({
-          type: authConstants.LOGIN_FAILURE,
-          payload: { message }
+          type: authConstants.LOGIN_SUCCESS,
+          payload: { token, user }
         });
         swal.fire({
-          icon: 'error',
-          title: 'Failure!',
-          text: message
+          icon: 'success',
+          title: 'Success!',
+          text: 'Login successfully'
         })
       }
+    } catch (error) {
+      const { message } = error.response.data;
+      dispatch({
+        type: authConstants.LOGIN_FAILURE,
+        payload: { message }
+      });
+      swal.fire({
+        icon: 'error',
+        title: 'Failure!',
+        text: message
+      });
     }
   }
 }

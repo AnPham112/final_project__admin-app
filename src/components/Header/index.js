@@ -22,7 +22,7 @@ const Header = (props) => {
             className="nav-link"
             onClick={logout}
           >
-            Signout
+            Logout
           </span>
         </li>
       </Nav>
@@ -47,7 +47,7 @@ const Header = (props) => {
         {auth.authenticate ? renderLoggedInLinks() : renderNonLoggedInLinks()}
       </Container>
     </Navbar>
-  )
+  );
 }
 
 export default Header;

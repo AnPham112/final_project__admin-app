@@ -4,7 +4,7 @@ import './style.css';
 
 const NewModal = (props) => {
   return (
-    <Modal size={props.size} show={props.show} onHide={props.handleClose}>
+    <Modal size={props.size} show={props.show} onHide={props.handleClose} animation={false}>
       <Modal.Header closeButton className={props.modalHeaderColor}>
         <Modal.Title>{props.modalTitle}</Modal.Title>
       </Modal.Header>

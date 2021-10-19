@@ -36,7 +36,6 @@ const BarChart = ({ users, orders, delivered }) => {
         }
       }}
     />
-
   );
 }
 

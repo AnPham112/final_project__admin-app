@@ -11,7 +11,7 @@ const Layout = (props) => {
       {props.sidebar ?
         <Container fluid>
           <Row>
-            <Col md={2} xs={3} className="sidebar">
+            <Col xs={3} md={2} sm={2} className="sidebar">
               <ul>
                 <li><NavLink exact to={`/`}>Home</NavLink></li>
                 <li><NavLink to={`/category`}>Category</NavLink></li>
@@ -19,7 +19,6 @@ const Layout = (props) => {
                 <li><NavLink to={`/orders`}>Orders</NavLink></li>
               </ul>
             </Col>
-
             <Col md={10} className="admin-container">
               {props.children}
             </Col>
@@ -27,6 +26,8 @@ const Layout = (props) => {
         </Container>
         : props.children
       }
+
+
     </>
   );
 }

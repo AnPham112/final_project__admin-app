@@ -33,6 +33,7 @@ const Orders = (props) => {
 
   return (
     <Layout sidebar>
+      <h3>Order list</h3>
       {
         order.orders.map((orderItem, index) => (
           <Card

@@ -1,5 +1,6 @@
 import axios from "../helpers/axios"
 import { productConstants } from "./constants";
+import { toast } from 'react-toastify';
 
 const getProducts = () => {
   return async (dispatch) => {
@@ -29,6 +30,7 @@ export const addProduct = (form) => {
       if (res.status === 201) {
         dispatch({ type: productConstants.ADD_PRODUCT_SUCCESS });
         dispatch(getProducts());
+        toast.success("Add product successfully!", { autoClose: 1500, theme: 'dark' })
       } else {
         dispatch({ type: productConstants.ADD_PRODUCT_FAILURE });
       }

@@ -17,10 +17,10 @@ const Signup = (props) => {
   const validationSchema = yup.object().shape({
     firstName: yup.string()
       .max(20, 'First name is too long')
-      .required('Email is required'),
+      .required('First name is required'),
     lastName: yup.string()
       .max(20, 'Last name is too long')
-      .required('Email is required'),
+      .required('Last name is required'),
     email: yup.string()
       .max(60, 'Email is too long')
       .required('Email is required')
@@ -30,7 +30,7 @@ const Signup = (props) => {
       .max(60, 'Password is too long')
       .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=^.{6,}$)/, 'Password must have at least 6 characters, 1 uppercase character, 1 number'),
     confirmPassword: yup.string()
-      .oneOf([yup.ref('password'), null], 'Passwords must match')
+      .oneOf([yup.ref('password'), null], 'Password must match')
       .required('Confirm password is required')
   });
 
