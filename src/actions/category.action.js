@@ -31,7 +31,7 @@ export const addCategory = (form) => {
           type: categoryConstants.ADD_NEW_CATEGORY_SUCCESS,
           payload: { category: res.data.category }
         });
-        toast.success("Add category successfully!", { autoClose: 1500, theme: 'dark' });
+        toast.success("Add category successfully!", { autoClose: 1500, position: toast.POSITION.TOP_CENTER, theme: 'dark' });
       } else {
         dispatch({
           type: categoryConstants.ADD_NEW_CATEGORY_FAILURE,
@@ -51,7 +51,7 @@ export const updateCategories = (form) => {
     if (res.status === 201) {
       dispatch({ type: categoryConstants.UPDATE_CATEGORIES_SUCCESS });
       dispatch(getAllCategory());
-      toast.success("Updated successfully!", { autoClose: 1500, theme: 'dark' });
+      toast.success("Updated successfully!", { autoClose: 1500, position: toast.POSITION.TOP_CENTER, theme: 'dark' });
     } else {
       const { error } = res.data;
       dispatch({
@@ -69,7 +69,7 @@ export const deleteCategories = (ids) => {
     if (res.status === 201) {
       dispatch({ type: categoryConstants.DELETE_CATEGORIES_SUCCESS });
       dispatch(getAllCategory());
-      toast.success("Successfully deleted!", { autoClose: 1500, theme: 'dark' });
+      toast.success("Successfully deleted!", { autoClose: 1500, position: toast.POSITION.TOP_CENTER, theme: 'dark' });
     } else {
       const { error } = res.data;
       dispatch({

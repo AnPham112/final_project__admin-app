@@ -5,6 +5,7 @@ import { NavLink, Link, Redirect } from 'react-router-dom';
 import Logo from '../../images/logo.png';
 import { signout } from '../../actions';
 import './style.css';
+
 const Header = (props) => {
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const Header = (props) => {
       <Nav>
         <li className="nav-item">
           <span
-            className="nav-link"
+            className="logout-link"
             onClick={logout}
           >
             Logout

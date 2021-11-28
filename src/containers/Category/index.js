@@ -22,8 +22,9 @@ import {
 } from 'react-icons/io';
 import Layout from '../../components/Layout';
 import Modal from '../../components/UI/Modal';
-import UpdateCategoriesModal from './components/UpdateCategoriesModal';
 import Select from '../../components/UI/Select';
+import UpdateCategoriesModal from './components/UpdateCategoriesModal';
+import DeleteCategoryModal from './components/DeleteCategoryModal';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -33,6 +34,7 @@ import './style.scss';
 
 const Category = (props) => {
   const category = useSelector(state => state.category);
+  const auth = useSelector(state => state.auth);
   const [parentCategoryId, setParentCategoryId] = useState('');
   const [categoryImage, setCategoryImage] = useState('');
   const [show, setShow] = useState(false);
@@ -45,14 +47,9 @@ const Category = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!category.loading) {
-      setShow(false);
-    }
-  }, [category.loading]);
-
-  useEffect(() => {
-    dispatch(getAllCategory());
-  }, []);
+    if (auth.authenticate)
+      dispatch(getAllCategory());
+  }, [auth.authenticate]);
 
   const addCategoryForm = (data) => {
     const form = new FormData();
@@ -179,44 +176,6 @@ const Category = (props) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const renderDeleteCategoryModal = () => {
-    return (
-      <Modal
-        modalTitle="Confirm"
-        show={deleteCategoryModal}
-        handleClose={() => setDeleteCategoryModal(false)}
-        modalHeaderColor="delete-modal__header"
-        buttons={[
-          {
-            label: 'Cancle',
-            btnColor: 'cancleBtn',
-            onClick: () => {
-              alert('Cancle');
-            }
-          },
-          {
-            label: 'Yes',
-            btnColor: 'deleteBtn',
-            onClick: deleteCategories
-          }
-        ]}
-      >
-        <h6>Expanded</h6>
-        {
-          expandedArray.map((item, index) =>
-            <span key={index}>{item.name}&nbsp;|&nbsp;</span>
-          )
-        }
-        <h6>Checked</h6>
-        {
-          checkedArray.map((item, index) =>
-            <span key={index}>{item.name}&nbsp;|&nbsp;</span>
-          )
-        }
-      </Modal>
-    );
-  }
-
   const categoryList = createCategoryList(category.categories);
 
   const renderAddCategoryModal = () => {
@@ -233,8 +192,8 @@ const Category = (props) => {
             onClick: handleSubmit(addCategoryForm)
           },
           {
-            label: 'Cancle',
-            btnColor: 'cancleBtn',
+            label: 'Cancel',
+            btnColor: 'cancelBtn',
             onClick: () => setShow(false)
           }
         ]}
@@ -323,7 +282,14 @@ const Category = (props) => {
           handleCategoryInput={handleCategoryInput}
           categoryList={categoryList}
         />
-        {renderDeleteCategoryModal()}
+
+        <DeleteCategoryModal
+          modalTitle={'Are you sure?'}
+          show={deleteCategoryModal}
+          handleClose={() => setDeleteCategoryModal(false)}
+          onSubmit={deleteCategories}
+          checkedArray={checkedArray}
+        />
       </Container>
       <ToastContainer />
     </Layout>

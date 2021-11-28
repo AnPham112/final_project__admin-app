@@ -6,12 +6,11 @@ import Modal from '../../components/UI/Modal';
 import Select from '../../components/UI/Select';
 import { addProduct, deleteProductById } from '../../actions/product.action';
 import { generatePublicUrl } from '../../urlConfig';
-import { IoIosAdd } from 'react-icons/io';
 import { BsTrash, BsEye } from "react-icons/bs";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import './style.scss';
 
 const Products = (props) => {
@@ -19,6 +18,8 @@ const Products = (props) => {
   const [productPictures, setProductPictures] = useState([]);
   const [show, setShow] = useState(false);
   const [productDetailModal, setProductDetailModal] = useState(false);
+  const [deleteProductModal, setDeleteProductModal] = useState(false);
+  const [deleteProduct, setDeleteProduct] = useState(null);
   const [productDetails, setProductDetails] = useState(null);
   const category = useSelector(state => state.category);
   const product = useSelector(state => state.product);
@@ -116,14 +117,7 @@ const Products = (props) => {
                   </button>
                   <button
                     className="btn-delete-product"
-                    onClick={() => {
-                      const payload = {
-                        productId: product._id,
-                      };
-                      dispatch(deleteProductById(payload)).then(() =>
-                        toast.success("Delete product successfully!", { autoClose: 1500, theme: 'dark' })
-                      )
-                    }}
+                    onClick={() => showDeleteProductModal(product)}
                   >
                     <BsTrash />
                   </button>
@@ -150,8 +144,8 @@ const Products = (props) => {
             onClick: handleSubmit(submitProductForm)
           },
           {
-            label: 'Cancle',
-            btnColor: 'cancleBtn',
+            label: 'Cancel',
+            btnColor: 'cancelBtn',
             onClick: handleClose
           }
         ]}>
@@ -259,7 +253,7 @@ const Products = (props) => {
         buttons={[
           {
             label: 'Close',
-            btnColor: 'cancleBtn',
+            btnColor: 'cancelBtn',
             onClick: handleCloseProductDetaislModal
           }
         ]}>
@@ -301,6 +295,49 @@ const Products = (props) => {
     );
   }
 
+  const handleCloseDeleteProductModal = () => {
+    setDeleteProductModal(false)
+  }
+
+  const showDeleteProductModal = (product) => {
+    setDeleteProduct(product);
+    setDeleteProductModal(true);
+  }
+
+  const renderDeleteProductModal = () => {
+    if (!deleteProduct) {
+      return null;
+    }
+    return (
+      <Modal
+        show={deleteProductModal}
+        handleClose={handleCloseDeleteProductModal}
+        modalTitle={'Are you sure?'}
+        modalHeaderColor="delete-modal__header"
+        buttons={[
+          {
+            label: 'Cancel',
+            btnColor: 'cancelBtn',
+            onClick: handleCloseDeleteProductModal
+          },
+          {
+            label: 'Yes',
+            btnColor: 'deleteBtn',
+            onClick: () => {
+              const payload = {
+                productId: deleteProduct._id
+              };
+              dispatch(deleteProductById(payload))
+                .then(setDeleteProductModal(false))
+            }
+          }
+        ]}
+      >
+        <h6>Are you sure to delete this product?</h6>
+      </Modal>
+    )
+  }
+
   return (
     <Layout sidebar>
       <Container>
@@ -310,7 +347,7 @@ const Products = (props) => {
               <h3>Products</h3>
               <button className="btn-add-product" onClick={handleShow}
               >
-                <IoIosAdd /><span>Add</span>
+                <span>Add</span>
               </button>
             </div>
           </Col>
@@ -322,6 +359,7 @@ const Products = (props) => {
         </Row>
       </Container>
       {renderAddProductModal()}
+      {renderDeleteProductModal()}
       {renderProductDetailsModal()}
       <ToastContainer />
     </Layout>

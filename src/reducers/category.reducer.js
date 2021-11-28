@@ -2,7 +2,6 @@ import { categoryConstants } from "../actions/constants"
 
 const initState = {
   categories: [],
-  loading: false,
   error: null
 }
 
@@ -59,62 +58,43 @@ export default (state = initState, action) => {
       }
       break;
     case categoryConstants.ADD_NEW_CATEGORY_REQUEST:
-      state = {
-        ...state,
-        loading: true
-      }
+      state = { ...state }
       break;
     case categoryConstants.ADD_NEW_CATEGORY_SUCCESS:
       const category = action.payload.category;
       const updatedCategories = buildNewCategories(category.parentId, state.categories, category);
       state = {
         ...state,
-        categories: updatedCategories,
-        loading: false,
+        categories: updatedCategories
       }
       break;
     case categoryConstants.ADD_NEW_CATEGORY_FAILURE:
       state = {
         ...initState,
-        loading: false,
         error: action.payload.error
       }
       break;
     case categoryConstants.UPDATE_CATEGORIES_REQUEST:
-      state = {
-        ...state,
-        loading: true
-      }
+      state = { ...state }
       break;
     case categoryConstants.UPDATE_CATEGORIES_SUCCESS:
-      state = {
-        ...state,
-        loading: false
-      }
+      state = { ...state }
       break;
     case categoryConstants.UPDATE_CATEGORIES_FAILURE:
       state = {
         ...state,
-        error: action.payload.error,
-        loading: false
+        error: action.payload.error
       }
       break;
     case categoryConstants.DELETE_CATEGORIES_REQUEST:
-      state = {
-        ...state,
-        loading: true
-      }
+      state = { ...state }
       break;
     case categoryConstants.DELETE_CATEGORIES_SUCCESS:
-      state = {
-        ...state,
-        loading: false
-      }
+      state = { ...state }
       break;
     case categoryConstants.DELETE_CATEGORIES_FAILURE:
       state = {
         ...state,
-        loading: false,
         error: action.payload.error
       }
       break;

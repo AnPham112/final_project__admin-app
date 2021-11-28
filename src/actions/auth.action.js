@@ -23,10 +23,7 @@ export const login = (user) => {
       }
     } catch (error) {
       const { message } = error.response.data;
-      dispatch({
-        type: authConstants.LOGIN_FAILURE,
-        payload: { message }
-      });
+      dispatch({ type: authConstants.LOGIN_FAILURE });
       swal.fire({
         icon: 'error',
         title: 'Failure!',

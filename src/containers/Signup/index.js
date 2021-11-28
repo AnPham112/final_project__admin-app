@@ -11,7 +11,6 @@ import classnames from 'classnames';
 import './style.css';
 
 const Signup = (props) => {
-  const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   const validationSchema = yup.object().shape({
@@ -48,10 +47,6 @@ const Signup = (props) => {
       password: '',
       confirmPassword: ''
     });
-  }
-
-  if (auth.authenticate) {
-    return <Redirect to={`/`} />
   }
 
   return (

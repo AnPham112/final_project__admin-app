@@ -5,6 +5,7 @@ import Layout from '../../components/Layout'
 import Card from '../../components/UI/Card';
 import { ToastContainer } from 'react-toastify';
 import './style.css';
+import moment from 'moment';
 
 const Orders = (props) => {
   const auth = useSelector((state) => state.auth);
@@ -22,14 +23,6 @@ const Orders = (props) => {
       dispatch(getCustomerOrders());
     }
   }, [auth.authenticate]);
-
-  const formatDate = (date) => {
-    if (date) {
-      const d = new Date(date);
-      return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-    }
-    return "";
-  }
 
   return (
     <Layout sidebar>
@@ -70,13 +63,12 @@ const Orders = (props) => {
                     <div className={`point ${status.isCompleted ? "active" : ""}`}></div>
                     <div className="orderInfo">
                       <div className="status">{status.type}</div>
-                      <div className="date">{formatDate(status.date)}</div>
+                      <div className="date">{moment(status.date).format('MM/DD/YYYY')}</div>
                     </div>
                   </div>
                 ))}
               </div>
 
-              {/* select input to apply order action */}
               <div className="selectStatusContainer">
                 <select className="form-select" onChange={(e) => setType(e.target.value)}>
                   <option value={""}>Select status</option>

@@ -49,9 +49,12 @@
   border: 0;
   font-size: 0.9rem;
   font-weight: 500;
-  padding: 0.4rem 1rem;
+  padding: 0.4rem 1.3rem;
+  background-color: #3e636d;
+  border-radius: 5px;
+  color: #fff;
   &:hover {
-    background-color: #c9c9c9;
+    background-color: #2e484e;
   }
 }
 .btn-view-product {
@@ -80,4 +83,8 @@
   display: block;
   font-weight: 600;
   margin-bottom: 0.3rem;
+}
+.delete-modal__header-color {
+  background-color: #dc3545;
+  color: #fff;
 }

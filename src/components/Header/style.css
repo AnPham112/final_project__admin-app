@@ -1,14 +1,13 @@
 .admin-navbar {
     z-index: 1;
+    background-color: rgba(20, 45, 52);
 }
-.nav-link {
+.logout-link {
     cursor: pointer;
+    color: #fff;
 }
 .navbar-brand img {
     width: 1.5rem;
-}
-.admin-navbar {
-    background-color: rgba(20, 45, 52);
 }
 .navbar-light .navbar-nav .nav-link {
     color: #fff !important;

@@ -8,26 +8,19 @@ export const signup = (user) => {
     const res = await axios.post(`/admin/signup`, { ...user });
     if (res.status === 201) {
       const { message } = res.data;
-      dispatch({
-        type: userConstants.USER_REGISTER_SUCCESS,
-        payload: { message }
-      });
+      dispatch({ type: userConstants.USER_REGISTER_SUCCESS });
       swal.fire({
         icon: 'success',
         title: 'Success!',
-        text: res.data.message
+        text: message
       });
     } else {
       if (res.status === 400) {
-        const { error } = res.data;
-        dispatch({
-          type: userConstants.USER_REGISTER_FAILURE,
-          payload: { error }
-        });
+        dispatch({ type: userConstants.USER_REGISTER_FAILURE });
         swal.fire({
           icon: 'error',
           title: 'Failure!',
-          text: error.response.data.message
+          text: 'Admin already exists'
         })
       }
     }

@@ -30,7 +30,7 @@ export const addProduct = (form) => {
       if (res.status === 201) {
         dispatch({ type: productConstants.ADD_PRODUCT_SUCCESS });
         dispatch(getProducts());
-        toast.success("Add product successfully!", { autoClose: 1500, theme: 'dark' })
+        toast.success("Add product successfully!", { autoClose: 1500, position: toast.POSITION.TOP_CENTER, theme: 'dark' })
       } else {
         dispatch({ type: productConstants.ADD_PRODUCT_FAILURE });
       }
@@ -50,6 +50,7 @@ export const deleteProductById = (payload) => {
       if (res.status === 202) {
         dispatch({ type: productConstants.DELETE_PRODUCT_BY_ID_SUCCESS });
         dispatch(getProducts());
+        toast.success("Delete product successfully!", { autoClose: 1500, position: toast.POSITION.TOP_CENTER, theme: 'dark' })
       } else {
         const { error } = res.data;
         dispatch({

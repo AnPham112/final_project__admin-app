@@ -31,8 +31,8 @@ const UpdateCategoriesModal = (props) => {
           onClick: onSubmit
         },
         {
-          label: 'Cancle',
-          btnColor: 'cancleBtn',
+          label: 'Cancel',
+          btnColor: 'cancelBtn',
           onClick: handleClose
         }
       ]}
@@ -73,7 +73,6 @@ const UpdateCategoriesModal = (props) => {
               >
                 <option value="" className="select-placeholder">---Select Type---</option>
                 <option value="store">Store</option>
-                {/* <option value="page">Page</option> */}
               </select>
             </Col>
           </Row>
@@ -111,7 +110,6 @@ const UpdateCategoriesModal = (props) => {
               >
                 <option value="" className="select-placeholder">---Select Type---</option>
                 <option value="store">Store</option>
-                {/* <option value="page">Page</option> */}
               </select>
             </Col>
           </Row>
